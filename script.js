@@ -12,7 +12,7 @@ function moveButton() {
     hasClickedNo = true;
     noBtn.style.position = "absolute";
 
-    // "Nearby" jumping logic - stays within the button area
+    // Nearby jumping range
     const randomX = (Math.random() - 0.5) * 150; 
     const randomY = (Math.random() - 0.5) * 150;
 
@@ -22,22 +22,18 @@ function moveButton() {
     noBtn.innerHTML = messages[messageIndex];
     messageIndex = (messageIndex + 1) % messages.length;
     
-    // Make Yes grow slightly
+    // FAST GROWTH: Multiplier increased to 1.6
     const currentSize = parseFloat(window.getComputedStyle(yesBtn).fontSize);
-    yesBtn.style.fontSize = `${currentSize * 1.1}px`;
+    yesBtn.style.fontSize = `${currentSize * 1.6}px`;
+    yesBtn.style.padding = "20px 40px"; // Also increase padding for impact
 }
 
 noBtn.addEventListener("mouseover", moveButton);
-noBtn.addEventListener("touchstart", (e) => {
-    e.preventDefault(); 
-    moveButton();
-});
+noBtn.addEventListener("touchstart", (e) => { e.preventDefault(); moveButton(); });
 
 yesBtn.addEventListener("click", () => {
-    // 1. Fireworks!
     confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
 
-    // 2. Change Image & Text
     if (!hasClickedNo) {
         question.innerHTML = "WOWW! So soon!! 😲😱✨";
         mainImg.src = "fast.webp";
@@ -46,13 +42,9 @@ yesBtn.addEventListener("click", () => {
         mainImg.src = "final.gif";
     }
 
-    // 3. Show Thank You GIF
     thankYouContainer.innerHTML = `<img src="thankyou.gif" class="final-gif">`;
-
-    // 4. Hide Buttons
     noBtn.style.display = "none";
     yesBtn.style.display = "none";
-    
     createHearts();
 });
 
